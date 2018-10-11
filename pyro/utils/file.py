@@ -28,3 +28,7 @@ def copy_tree(source, destination, symlinks = False, ignore = None):
 				os.remove(d)
 
 			shutil.copy2(s, d)
+
+def get_immediate_subdirectories(path):
+	return [name for name in os.listdir(path)
+		if os.path.isdir(os.path.join(path, name))]

@@ -36,7 +36,7 @@ class Installer:
 
 	'''Determines whether the codeigniter version is available locally.'''
 	def version_on_disk(self, version):
-		subdirectories = [x[0] for x in os.walk('codeigniter')]
+		subdirectories = get_immediate_subdirectories('codeigniter')
 
 		for subdirectory in subdirectories:
 			print(subdirectory)
