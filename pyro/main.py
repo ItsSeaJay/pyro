@@ -1,8 +1,8 @@
 import argparse
 import sys
 import os
-import installer
 
+from installer import Installer
 from utils.file import *
 
 def main():
