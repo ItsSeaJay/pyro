@@ -10,7 +10,7 @@ def main():
 	description = file_get_contents('config/description.txt')
 	parser = argparse.ArgumentParser(description = description)
 	
-	# Add the command line arguments
+	# Add the list of valid command line arguments to the parser
 	parser.add_argument(
 		'-n',
 		'--new',
@@ -41,10 +41,10 @@ def main():
 					print('ERROR: Invalid choice. Enter only \'Y\' or \'n\'')
 
 			if choice == 'Y':
-				installer.install(args.new)
+				installer.install(args.new, installer.get_latest_version())
 		else:
 			os.makedirs(args.new)
-			installer.install(args.new)
+			installer.install(args.new, installer.get_latest_version())
 
 		print('Done.')
 

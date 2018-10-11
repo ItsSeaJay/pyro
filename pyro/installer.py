@@ -8,14 +8,12 @@ class Installer:
 		pass
 
 	def install(self, destination, version):
-		target = (version or self.get_latest_version())
-
-		if version_on_disk(target):
+		if self.version_on_disk(version):
 			# Obtain the source of the local CodeIgniter folder on disk
-			source = 'CodeIgniter/' + target
+			source = 'CodeIgniter/' + version
 
 			# Move all of the files from the master copy to the project folder
-			copy_tree(source, destination)
+			# copy_tree(source, destination)
 
 	def get_versions(self):
 		url = 'https://github.com/bcit-ci/CodeIgniter/releases.atom'
@@ -38,8 +36,15 @@ class Installer:
 
 	'''Determines whether the codeigniter version is available locally.'''
 	def version_on_disk(self, version):
-		for subdirectory in os.walk('codeigniter'):
+		subdirectories = [x[0] for x in os.walk('codeigniter')]
+
+		for subdirectory in subdirectories:
+			print(subdirectory)
+
 			if version == subdirectory:
+				# Someone could technically spoof this check by creating
+				# a folder that matches the pattern,
+				# but we're just going to keep things simple for now
 				return True
 
 		return False
