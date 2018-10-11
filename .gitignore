@@ -105,3 +105,6 @@ venv.bak/
 
 # Pyro test project
 pyro/test
+
+# Pyro CodeIgniter folder
+pyro/codeigniter/*
