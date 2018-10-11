@@ -35,7 +35,7 @@ def main():
 			# Warn the user that the project's folder isn't empty
 			# and give them the option of cancelling
 			while choice != 'Y' and choice != 'n':
-				choice = input('WARNING: Folder isn\'t empty. Overwrite? (Y/n):')
+				choice = input('WARNING: Folder isn\'t empty. Overwrite? (Y/n): ')
 
 				if choice != 'Y' and choice != 'n':
 					print('ERROR: Invalid choice. Enter only \'Y\' or \'n\'')
