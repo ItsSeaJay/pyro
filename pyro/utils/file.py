@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from utils.file import *
+
 def file_get_contents(path):
 	with open(path, 'r') as file:
 		contents = file.read()
@@ -14,7 +16,7 @@ def copy_tree(source, destination, symlinks = False, ignore = None):
 		s = os.path.join(source, item)
 		d = os.path.join(destination, item)
 
-		print('Copying', s, 'to', d, '...')
+		print('Copying', os.path.abspath(s), 'to', os.path.abspath(d), '...')
 
 		if os.path.isdir(s):
 			if os.path.exists(d):

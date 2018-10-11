@@ -1,6 +1,8 @@
 import argparse
 import sys
 import os
+import installer
+
 from utils.file import *
 
 def main():
@@ -25,9 +27,9 @@ def main():
 
 	# React accordingly based on which argument they used
 	if args.new:
+		installer = Installer()
+
 		if os.path.exists(args.new):
-			source = 'CodeIgniter-3.1.9'
-			destination = args.new
 			choice = ''
 
 			# Warn the user that the project's folder isn't empty
@@ -39,14 +41,10 @@ def main():
 					print('ERROR: Invalid choice. Enter only \'Y\' or \'n\'')
 
 			if choice == 'Y':
-				copy_tree(source, destination)
+				installer.install(args.new)
 		else:
-			# TODO: Make this sensitive to the version number
-			source = 'CodeIgniter-3.1.9'
-			destination = args.new
-
 			os.makedirs(args.new)
-			copy_tree(source, destination)
+			installer.install(args.new)
 
 		print('Done.')
 
