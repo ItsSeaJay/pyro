@@ -1,19 +1,65 @@
 import feedparser
 import os
+import shutil
+import urllib.request
+import zipfile
 
 from utils.file import *
+from utils.command_line import *
 
 class Installer:
 	def __init__(self):
 		pass
 
 	def install(self, destination, version):
-		if self.version_on_disk(version):
-			# Obtain the source of the local CodeIgniter folder on disk
-			source = 'CodeIgniter/' + version
+		if not self.version_on_disk(version):
+			print('A new version of CodeIgniter (', version, ') is available, but not downloaded.')
 
-			# Move all of the files from the master copy to the project folder
-			# copy_tree(source, destination)
+			# Verify that the user wants to download this new version
+			prompt = 'Download? (Y/n): '
+			choice = get_choice(prompt)
+
+			if choice == 'Y':
+				self.download(version)
+		else:
+			# Install straight from the local drive
+			print('Latest version (' + version + ') found on disk...')
+
+		source = 'codeigniter/' + version
+
+		copy_folder_contents(source, destination)
+
+	def download(self, version):
+		# Download the latest version of CodeIgniter
+		url = 'https://github.com/bcit-ci/CodeIgniter/archive/' + version + '.zip'
+		path = 'cache/' + version + '.zip'
+		source = 'cache/CodeIgniter-' + version
+		destination = 'codeigniter/' + version
+
+		print('Downloading', url, '...')
+
+		# Make a request to open the file at the above URL
+		with urllib.request.urlopen(url) as response, open(path, 'wb') as archive:
+			# Write the binary data from the page to a file on disk
+			data = response.read()
+			archive.write(data)
+
+		print('Extracting', os.path.abspath(path), 'to', os.path.abspath(destination))
+
+		# Extract the contents to the cache folder
+		with zipfile.ZipFile(path, 'r') as archive:
+			archive.extractall(cache_folder)
+
+		# Copy the extracted files to the codeigniter folder
+		os.makedirs(destination)
+		copy_folder_contents(source, destination)
+
+		# Clean the cache after the download has completed
+		self.clean_cache()
+
+	def clean_cache(self):
+		print('Cleaning pyro cache at', os.path.abspath('cache'))
+		delete_folder_contents(cache)
 
 	def get_versions(self):
 		url = 'https://github.com/bcit-ci/CodeIgniter/releases.atom'
@@ -36,11 +82,10 @@ class Installer:
 
 	'''Determines whether the codeigniter version is available locally.'''
 	def version_on_disk(self, version):
+		# Get all of the subdirectories at the first level of the codeigniter folder
 		subdirectories = get_immediate_subdirectories('codeigniter')
 
 		for subdirectory in subdirectories:
-			print(subdirectory)
-
 			if version == subdirectory:
 				# Someone could technically spoof this check by creating
 				# a folder that matches the pattern,

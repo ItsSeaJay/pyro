@@ -4,6 +4,7 @@ import os
 
 from installer import Installer
 from utils.file import *
+from utils.command_line import *
 
 def main():
 	# Create a new ArgumentParser
@@ -30,18 +31,12 @@ def main():
 		installer = Installer()
 
 		if os.path.exists(args.new):
-			choice = ''
-
-			# Warn the user that the project's folder isn't empty
-			# and give them the option of cancelling
-			while choice != 'Y' and choice != 'n':
-				choice = input('WARNING: Folder isn\'t empty. Overwrite? (Y/n): ')
-
-				if choice != 'Y' and choice != 'n':
-					print('ERROR: Invalid choice. Enter only \'Y\' or \'n\'')
+			prompt = 'WARNING: Folder isn\'t empty. Overwrite? (Y/n): '
+			choice = get_choice(prompt)
 
 			if choice == 'Y':
-				installer.install(args.new, installer.get_latest_version())
+				# installer.install(args.new, installer.get_latest_version())
+				installer.clean_cache()
 		else:
 			os.makedirs(args.new)
 			installer.install(args.new, installer.get_latest_version())
