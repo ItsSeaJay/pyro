@@ -16,14 +16,22 @@ def main():
 	parser.add_argument(
 		'-n',
 		'--new',
-		help = 'Creates a new CodeIgniter project with the given name'
+		help = 'Creates a new CodeIgniter project with a given name',
+		nargs = 1
 	)
 	# Versions
 	parser.add_argument(
+		'-v',
 		'--versions',
-		help = '''Gets a list of all of the CodeIgniter versions currently
-		installed on disk''',
-		nargs = '*'
+		help = 'Gets a list of all of the CodeIgniter versions currently installed on disk',
+		action = 'store_true' # Don't accept any positional arguments after this one
+	)
+	# download
+	parser.add_argument(
+		'-d',
+		'--download',
+		help = 'Downloads the specified codeigniter version if it isn\'t already',
+		nargs = 1
 	)
 
 
@@ -58,6 +66,12 @@ def main():
 				print(version)
 		else:
 			print('No valid codeigniter versions currently installed.')
+	elif args.download:
+		installer = Installer()
+		path = 'codeigniter/' + args.download
+
+		if not os.path.isdir(path):
+			installer.download(args.download)
 
 if __name__ == '__main__':
 	main()
