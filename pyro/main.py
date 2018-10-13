@@ -12,11 +12,20 @@ def main():
 	parser = argparse.ArgumentParser(description = description)
 	
 	# Add the list of valid command line arguments to the parser
+	# New project
 	parser.add_argument(
 		'-n',
 		'--new',
 		help = 'Creates a new CodeIgniter project with the given name'
 	)
+	# Versions
+	parser.add_argument(
+		'--versions',
+		help = '''Gets a list of all of the CodeIgniter versions currently
+		installed on disk''',
+		nargs = '*'
+	)
+
 
 	# Parse the arguments sent by the user and store them
 	args = parser.parse_args()
@@ -41,6 +50,14 @@ def main():
 			installer.install(args.new, installer.get_latest_version())
 
 		print('Done.')
+	elif args.versions:
+		versions = os.listdir('codeigniter')
+
+		if len(versions) > 0:
+			for version in versions:
+				print(version)
+		else:
+			print('No valid codeigniter versions currently installed.')
 
 if __name__ == '__main__':
 	main()
