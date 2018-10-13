@@ -32,7 +32,7 @@ def copy_folder_contents(source, destination, symlinks = False, ignore = None):
 # Modified from this StackOverflow post:
 # https://stackoverflow.com/questions/185936/how-to-delete-the-contents-of-a-folder-in-python#185941
 def delete_folder_contents(source):
-	for item in os.path.listdir(source):
+	for item in os.listdir(source):
 		path = os.path.join(source, item)
 
 		try:

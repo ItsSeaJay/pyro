@@ -35,8 +35,7 @@ def main():
 			choice = get_choice(prompt)
 
 			if choice == 'Y':
-				# installer.install(args.new, installer.get_latest_version())
-				installer.clean_cache()
+				installer.install(args.new, installer.get_latest_version())
 		else:
 			os.makedirs(args.new)
 			installer.install(args.new, installer.get_latest_version())

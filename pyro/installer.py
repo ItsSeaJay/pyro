@@ -44,11 +44,11 @@ class Installer:
 			data = response.read()
 			archive.write(data)
 
-		print('Extracting', os.path.abspath(path), 'to', os.path.abspath(destination))
+		print('Extracting', os.path.abspath(path), 'to', os.path.abspath(destination), '...')
 
 		# Extract the contents to the cache folder
 		with zipfile.ZipFile(path, 'r') as archive:
-			archive.extractall(cache_folder)
+			archive.extractall('cache')
 
 		# Copy the extracted files to the codeigniter folder
 		os.makedirs(destination)
@@ -58,8 +58,8 @@ class Installer:
 		self.clean_cache()
 
 	def clean_cache(self):
-		print('Cleaning pyro cache at', os.path.abspath('cache'))
-		delete_folder_contents(cache)
+		print('Cleaning pyro cache at', os.path.abspath('cache'), '...')
+		delete_folder_contents('cache')
 
 	def get_versions(self):
 		url = 'https://github.com/bcit-ci/CodeIgniter/releases.atom'
