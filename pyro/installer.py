@@ -12,22 +12,13 @@ class Installer:
 		pass
 
 	def install(self, destination, version):
-		if not self.version_on_disk(version):
-			print('A new version of CodeIgniter (', version, ') is available, but not downloaded.')
+		if self.version_on_disk(version):
+			source = 'codeigniter/' + version
 
-			# Verify that the user wants to download this new version
-			prompt = 'Download? (Y/n): '
-			choice = get_choice(prompt)
-
-			if choice == 'Y':
-				self.download(version)
+			copy_folder_contents(source, destination)
 		else:
-			# Install straight from the local drive
-			print('Latest version (' + version + ') found on disk...')
-
-		source = 'codeigniter/' + version
-
-		copy_folder_contents(source, destination)
+			print('CodeIgniter version isn\'t available on disk')
+			print('Use the --download command to get it')
 
 	def download(self, version):
 		# Download the latest version of CodeIgniter

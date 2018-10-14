@@ -9,6 +9,10 @@ def file_get_contents(path):
 
 	return contents
 
+def file_put_contents(path, contents):
+	with open(path, 'w') as file:
+		file.write(contents)
+
 # Modified from this StackOverflow post:
 # https://stackoverflow.com/questions/1868714/how-do-i-copy-an-entire-directory-of-files-into-an-existing-directory-using-pyth#12514470
 def copy_folder_contents(source, destination, symlinks = False, ignore = None):
