@@ -10,7 +10,7 @@ from utils.command_line import *
 def main():
 	# Create a new ArgumentParser
 	# TODO: Fix relative paths when obtaining the description
-	description = 'Pyro CodeIgniter Helper'
+	description = file_get_contents(get_base_path() + '/config/description.txt')
 	parser = argparse.ArgumentParser(description = description)
 	
 	# Add the list of valid command line arguments to the parser
@@ -44,6 +44,14 @@ def main():
 		help = 'Edits a single value in the configuration files of the current project',
 		metavar = ('FILE', 'KEY', 'VALUE'),
 		nargs = 3
+	)
+	# Generate
+	parser.add_argument(
+		'-g',
+		'--generate',
+		help = 'Creates a new source file of the given type and name in the current project',
+		metavar = ('TYPE', 'NAME'),
+		nargs = 2
 	)
 
 	# Parse the arguments sent by the user and store them
@@ -104,6 +112,34 @@ def main():
 		value = args.configure[2]
 
 		configurator.configure(file, key, value)
+	elif args.generate:
+		kinds = [
+			'model',
+			'view',
+			'controller',
+			'helper'
+		]
+
+		# Iterate through all of the kinds of files to see if the user matched one
+		for kind in kinds:
+			if args.generate[0] == kind:
+				# Generate a class name by capitilizing the first letter
+				name = args.generate[1].title().replace(' ', '_')
+				# Find the name of the resulting file
+				path = 'application/' + kind + 's/' + name + '.php'
+				# Get the template as a string
+				template =  file_get_contents(get_base_path() + '/templates/' + kind + '.php')
+
+				# Replace the name in the template with the one the user chose
+				template = template.replace('{name}', name)
+
+				# Write the filled in template to the path
+				file_put_contents(path, template)
+
+				# Print what kind of file we're generating to the console
+				print('Generating', kind, 'at', os.path.abspath(path), 'called', name, '...')
+
+	print('Done.')
 
 if __name__ == '__main__':
 	main()

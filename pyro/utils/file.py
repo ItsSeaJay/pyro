@@ -1,7 +1,13 @@
 import os
+import sys
 import shutil
 
 from utils.file import *
+
+def get_base_path():
+	base_path = os.path.dirname(os.path.realpath(sys.argv[0]))
+
+	return base_path
 
 def file_get_contents(path):
 	with open(path, 'r') as file:
